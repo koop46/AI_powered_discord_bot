@@ -7,4 +7,5 @@ Shout out to Dannyacademy:
 
 
 Idently:
-[![Idently](https://img.youtube.com/vi/UYJDKSah-Ww&t=913s/0.jpg)](https://www.youtube.com/watch?v=UYJDKSah-Ww&t=913s)
+[![Idently](https://img.youtube.com/vi/UYJDKSah-Ww&t=/0.jpg)](https://www.youtube.com/watch?v=UYJDKSah-Ww&t)
+
