@@ -24,7 +24,7 @@ async def send_message(message, user_message):
         user_message = user_message[1:]
 
         try:
-            response = get_response(user_message)
+            response = await get_response(user_message)
             await message.author.send(response) if user_message[0] == "?" else await message.channel.send(response)
 
         except Exception as e: 
@@ -33,7 +33,7 @@ async def send_message(message, user_message):
         user_message = user_message[1:]
 
         try:
-            response = get_response(user_message)
+            response = await get_response(user_message)
             await message.channel.send(response)
 
         except Exception as e: 
@@ -69,6 +69,7 @@ async def morning_schedule():
         if now.hour >= 7:
             then = (now + datetime.timedelta(days=1)).replace(hour=7, minute=0, second=0, microsecond=0)
         else:
+            
             then = now.replace(hour=7, minute=0, second=0, microsecond=0)
         
         wait_time = (then - now).total_seconds()
@@ -77,7 +78,7 @@ async def morning_schedule():
         # Check if today is a weekday (Monday is 0, Sunday is 6)
         if now.weekday() < 5:  # 0 (Monday) to 4 (Friday) are weekdays
             # Fetch the schedule before sending the message
-            todays_schedule = Glenda.summarize_todays_schedule()
+            todays_schedule = Glenda.summarize_schedule()
             await channel.send(todays_schedule)
 
 def main() -> None:
