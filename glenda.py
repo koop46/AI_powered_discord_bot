@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from ics import Calendar
 import requests, os
 
@@ -26,14 +26,28 @@ class Glenda:
 
         class_info = []
 
+
         for event in calendar_list:
+            if  "Rubrik" not in str(event.name): #Tentaanmälan and Omtenta have "Rubrik" in their name
 
-            course_name, class_activity = str(event.name).split(". ")[1].split(", ") #Split coursename and course activity/code
-            date, start_time = str(event.begin)[:-9].split("T") 
-            _, end_time = str(event.end)[:-9].split("T")
-            location = f"Sal: {str(event.location)}" #Add "Venue" string
+                course_name, class_activity = str(event.name).split(". ")[1].split(", ") #Split coursename and course activity/code
+                date, start_time = str(event.begin)[:-9].split("T") 
+                _, end_time = str(event.end)[:-9].split("T")
+                location = f"Sal: {str(event.location)}" #Add "Venue" string
 
-            class_info.append([course_name, class_activity, date, start_time, end_time, location])
+                class_info.append([course_name, class_activity, date, start_time, end_time, location])
+
+            else:
+                print(str(event.name), "!!!", str(event.begin))
+                tenta = str(event.name)
+
+
+                print(tenta)
+                print(date)
+                print(start_time)
+
+
+
 
 
         courses = []
@@ -114,12 +128,12 @@ class Glenda:
         return daily_summaries  
 
     @classmethod
-    def get_schedule(cls):
+    def get_schedule(cls, target_date):
         """ 
         - applies summarize function to schedule events
         - organizes into list of lists, by date
         """
-        todays_date = "2024-09-04" #str(date.today())
+        todays_date = target_date
 
         schedule_list = cls.summarize()
 
@@ -130,22 +144,22 @@ class Glenda:
 
                 if schedule_date == todays_date:
                     summarized_schedule.append(schedule[schedule_date])
+#                    print(schedule_date)
+                    summarized_schedule.insert(0, f"{schedule_date}")
 
-
-        summarized_schedule.insert(0, f"{schedule_date}")
         return summarized_schedule 
                     
 
 
     @classmethod
-    def summarize_todays_schedule(cls):
+    def summarize_schedule(cls, target_date= str(date.today())):
 
         """
         - Gets schedule
         - Presents it
         """
 
-        schedule_data = cls.get_schedule()
+        schedule_data = cls.get_schedule(target_date)
 
         summarization = []
 
@@ -170,7 +184,7 @@ class Glenda:
         """
 
         schedule_data = cls.summarize()
-        
+
 
         for courses in schedule_data:
             for date, day in courses.items():
@@ -179,6 +193,21 @@ class Glenda:
                                 return date, course
                             else:
                                 return "Mer än 1 månad bort"
+
+
+    @classmethod
+    def get_tomorrows_schedule(cls):
+
+        today = date.today()
+        tomorrow = today + timedelta(days=1)
+        str_tomorrow = str(tomorrow)
+
+        tomorrows_schedule = cls.summarize_schedule(str_tomorrow) 
+
+        return tomorrows_schedule
+
+
+
          
     @classmethod
     def kelvin_to_celsius(cls, kelvin):
@@ -215,9 +244,9 @@ class Glenda:
 
         weather_report = f"""Dagens väder: Göteborg 
         
-Max/min temperatur............... {weather_data['max_temp']}C / {weather_data['min_temp']}C
-Nuvar. luftfukt/vindstyrka........ {weather_data['luftfukt']}% / {weather_data['vind']}m/s
-Solnedgång............................... {weather_data['solnedgång']}
+Max/min temperatur...............{weather_data['max_temp']}C / {weather_data['min_temp']}C
+Nuvar. luftfukt/vindstyrka........{weather_data['luftfukt']}% / {weather_data['vind']}m/s
+Solnedgång...............................{weather_data['solnedgång']}
     """
 
         print (weather_report)
