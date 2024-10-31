@@ -19,7 +19,7 @@ async def glenda_talk(prompt):
         messages = [
             {
                 "role": "user",
-                "content": f"Your name is Glenda. Respond in less than 2000 characters {prompt}"
+                "content": f"Your name is Glenda. Respond in less than 2000 characters. {prompt}"
             }
         ],
     )
