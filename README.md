@@ -1,5 +1,6 @@
 # glenda_discord
 Discordbot for computer science class discord channel. 
+  
 In this project I built a discord bot and connected it an open source LLM hosted on the Akash Network.
 Many thanks to Idently and Dannyacademy for the tutorials and Akash Network:
 
